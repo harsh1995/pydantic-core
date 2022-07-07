@@ -251,6 +251,7 @@ pub fn build_validator<'a>(
         typed_dict::TypedDictValidator,
         // unions
         union::UnionValidator,
+        union::TaggedUnionValidator,
         // nullables
         nullable::NullableValidator,
         // model classes
@@ -318,6 +319,7 @@ pub enum CombinedValidator {
     Model(typed_dict::TypedDictValidator),
     // unions
     Union(union::UnionValidator),
+    TaggedUnion(union::TaggedUnionValidator),
     // nullables
     Nullable(nullable::NullableValidator),
     // model classes
