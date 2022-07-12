@@ -94,6 +94,7 @@ def test_date_json(py_or_json, input_value, expected):
         (True, Err('Value must be a valid date [kind=date_type')),
         (datetime(2022, 6, 8), Err('Value must be a valid date [kind=date_type')),
     ],
+    ids=repr,
 )
 def test_date_strict(input_value, expected):
     v = SchemaValidator({'type': 'date', 'strict': True})
