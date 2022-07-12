@@ -44,20 +44,20 @@ def py_or_json(request):
         def __init__(self, schema):
             self.validator = SchemaValidator(schema)
 
-        def validate_python(self, py_input):
-            return self.validator.validate_python(py_input)
+        def validate_python(self, py_input, strict=None):
+            return self.validator.validate_python(py_input, strict)
 
-        def validate_test(self, py_input):
+        def validate_test(self, py_input, strict=None):
             if request.param == 'json':
-                return self.validator.validate_json(json.dumps(py_input))
+                return self.validator.validate_json(json.dumps(py_input), strict)
             else:
-                return self.validator.validate_python(py_input)
+                return self.validator.validate_python(py_input, strict)
 
-        def isinstance_test(self, py_input):
+        def isinstance_test(self, py_input, strict=None):
             if request.param == 'json':
-                return self.validator.isinstance_json(json.dumps(py_input))
+                return self.validator.isinstance_json(json.dumps(py_input), strict)
             else:
-                return self.validator.isinstance_python(py_input)
+                return self.validator.isinstance_python(py_input, strict)
 
     return CustomSchemaValidator
 
