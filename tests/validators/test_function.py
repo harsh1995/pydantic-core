@@ -6,6 +6,8 @@ import pytest
 
 from pydantic_core import SchemaError, SchemaValidator, ValidationError
 
+from ..conftest import plain_repr
+
 
 def test_function_before():
     def f(input_value, **kwargs):
@@ -109,20 +111,20 @@ def test_function_wrap():
 
 def test_function_wrap_repr():
     def f(input_value, *, validator, **kwargs):
-        return repr(validator)
+        return plain_repr(validator)
 
     v = SchemaValidator({'title': 'Test', 'type': 'function', 'mode': 'wrap', 'function': f, 'schema': 'str'})
 
-    assert v.validate_python('input value') == 'ValidatorCallable(Str(StrValidator))'
+    assert v.validate_python('input value') == 'ValidatorCallable(Str(StrValidator{strict:false}))'
 
 
 def test_function_wrap_str():
     def f(input_value, *, validator, **kwargs):
-        return str(validator)
+        return plain_repr(validator)
 
     v = SchemaValidator({'title': 'Test', 'type': 'function', 'mode': 'wrap', 'function': f, 'schema': 'str'})
 
-    assert v.validate_python('input value') == 'ValidatorCallable(Str(StrValidator))'
+    assert v.validate_python('input value') == 'ValidatorCallable(Str(StrValidator{strict:false}))'
 
 
 def test_function_wrap_not_callable():

@@ -5,7 +5,7 @@ import pytest
 
 from pydantic_core import SchemaValidator, ValidationError
 
-from ..conftest import Err
+from ..conftest import Err, plain_repr
 
 
 @pytest.mark.parametrize(
@@ -158,7 +158,7 @@ def test_union_int(py_or_json):
         v.validate_test('5')
 
     assert exc_info.value.errors() == [
-        {'kind': 'int_type', 'loc': ['strict-int'], 'message': 'Value must be a valid integer', 'input_value': '5'},
+        {'kind': 'int_type', 'loc': ['int'], 'message': 'Value must be a valid integer', 'input_value': '5'},
         {
             'kind': 'multiple_of',
             'loc': ['constrained-int'],
@@ -187,11 +187,11 @@ def test_union_int_simple(py_or_json):
 
 def test_int_repr():
     v = SchemaValidator({'type': 'int'})
-    assert repr(v) == 'SchemaValidator(name="int", validator=Int(\n    IntValidator,\n))'
+    assert plain_repr(v) == 'SchemaValidator(name="int",validator=Int(IntValidator{strict:false}))'
     v = SchemaValidator({'type': 'int', 'strict': True})
-    assert repr(v) == 'SchemaValidator(name="strict-int", validator=StrictInt(\n    StrictIntValidator,\n))'
+    assert plain_repr(v) == 'SchemaValidator(name="int",validator=Int(IntValidator{strict:true}))'
     v = SchemaValidator({'type': 'int', 'multiple_of': 7})
-    assert repr(v).startswith('SchemaValidator(name="constrained-int", validator=ConstrainedInt(\n')
+    assert plain_repr(v).startswith('SchemaValidator(name="constrained-int",validator=ConstrainedInt(')
 
 
 def test_long_int(py_or_json):
